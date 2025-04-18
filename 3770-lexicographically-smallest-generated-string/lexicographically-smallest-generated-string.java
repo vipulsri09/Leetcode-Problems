@@ -1,69 +1,51 @@
 class Solution {
     public String generateString(String str1, String str2) {
-        int n = str1.length();
-        int m = str2.length();
-        int L = n + m - 1;
-
-        Character[] word = new Character[L];
-        boolean[] forced = new boolean[L];
-
-        for (int i = 0; i < n; i++) {
-            if (str1.charAt(i) == 'T') {
-                for (int j = 0; j < m; j++) {
-                    int pos = i + j;
-                    if (word[pos] != null && word[pos] != str2.charAt(j)) {
-                        return "";
-                    }
-                    word[pos] = str2.charAt(j);
-                    forced[pos] = true;
+        StringBuilder s=new StringBuilder();
+        int n=str1.length();
+        int m=str2.length();
+        int[] free=new int[m+n-1];
+        for(int i=0;i<n;i++){
+            if(str1.charAt(i)=='T') s.replace(i,i+m,str2);
+            else{
+                if(s.length()==i) {
+                    s.append('a');
+                    free[i]=1;
                 }
+
             }
         }
+        int k=s.length();
+        for(int i=k;i<m+n-1;i++) {
+            free[i]=1;
+            s.append('a');
+            
+        }
+        if(!check(s,str1,str2,free)) return "";
+        return s.toString();
+    }
 
-        boolean[] free = new boolean[L];
-        for (int i = 0; i < L; i++) {
-            if (word[i] == null) {
-                word[i] = 'a';
-                free[i] = true;
+    public boolean check(StringBuilder s, String s2, String s3, int[] free){
+        int m=s3.length();
+        for(int i=0;i<s2.length();i++){
+            boolean curr=s.substring(i, i+m).toString().equals(s3);
+            if(s2.charAt(i)=='T'){
+                if(curr) continue;
+                else return false;
             }
-        }
-
-        if (n == 0) {
-            return String.join("", java.util.Collections.nCopies(L, "a"));
-        }
-
-        for (int i = 0; i < n; i++) {
-            if (str1.charAt(i) == 'F') {
-                if (intervalEquals(word, str2, i, m)) {
-                    boolean fixed = false;
-                    for (int j = m - 1; j >= 0; j--) {
-                        int pos = i + j;
-                        if (free[pos]) {
-                            word[pos] = 'b';
-                            free[pos] = false;
-                            fixed = true;
+            else{
+                if(!curr) continue;
+                else{
+                    int fixed=0;
+                    for(int j=i+m-1;j>=i;j--){
+                        if(free[j]==1){
+                            s.replace(j, j+1, s.charAt(j)=='a'?"b":"a");
+                            fixed=1;
                             break;
                         }
                     }
-                    if (!fixed) {
-                        return "";
-                    }
-                }
-            }
-        }
-
-        StringBuilder sb = new StringBuilder();
-        for (Character c : word) {
-            sb.append(c);
-        }
-        return sb.toString();
-    }
-
-    private boolean intervalEquals(Character[] word, String str2, int i, int m) {
-        for (int j = 0; j < m; j++) {
-            if (word[i + j] == null || word[i + j] != str2.charAt(j)) {
-                return false;
-            }
+                    if(fixed==0) return false;
+                }   
+            }     
         }
         return true;
     }
