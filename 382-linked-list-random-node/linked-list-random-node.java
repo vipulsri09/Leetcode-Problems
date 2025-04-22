@@ -1,18 +1,18 @@
-import java.util.*;
 class Solution {
-    private List<Integer> arr;
-    private Random rand;
+    int N = 0;
+    ListNode head = null;
     public Solution(ListNode head) {
-        arr = new ArrayList<>();
-        rand = new Random();
-        ListNode temp = head;
-        while (temp != null) {
-            arr.add(temp.val);
-            temp = temp.next;
-        }
+        this.head = head;
     }
+    
     public int getRandom() {
-        int r_index = rand.nextInt(arr.size());
-        return arr.get(r_index);
+        ListNode p = this.head;
+        int i = 1, ans = 0;
+        while (p != null) {
+            if (Math.random() * i < 1) ans = p.val; // replace ans with i-th node.val with probability 1/i
+            p = p.next;
+            i ++;
+        }
+        return ans;
     }
 }
