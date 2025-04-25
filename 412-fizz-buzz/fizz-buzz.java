@@ -9,7 +9,6 @@ class Solution {
                 String.valueOf(i)
             );
         }
-
-        return ans;
+       return ans;
     }
 }
