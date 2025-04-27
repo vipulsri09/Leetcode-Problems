@@ -1,22 +1,25 @@
-class Solution {
-    public int[] maxSlidingWindow(int[] nums, int k) {
-       List<Integer> res=new ArrayList<>();
-       Deque<Integer> deque = new LinkedList<>();
-
-       for(int idx=0; idx<nums.length; idx++){
-        int num =nums[idx];
-
-        while(!deque.isEmpty() && deque.getLast() <num){
-            deque.pollLast();
-          }
-          deque.addLast(num);
-          if(idx>=k && nums[idx-k] == deque.getFirst()){
-            deque.pollFirst();
-          }
-          if(idx>= k-1){
-            res.add(deque.getFirst());
-          }
-       } 
-       return res.stream(). mapToInt(i -> i).toArray();
+public class Solution {
+    public int[] maxSlidingWindow(int[] a, int k) {
+        if (a == null || k <= 0) {
+            return new int[0];
+        }
+        int n = a.length;
+        int[] r = new int[n - k + 1];
+        int ri = 0;
+        Deque<Integer> q = new ArrayDeque<>();
+        
+        for (int i = 0; i < n; i++) {
+            if (!q.isEmpty() && q.peek() < i - k + 1) {
+                q.poll();
+            }
+            while (!q.isEmpty() && a[q.peekLast()] < a[i]) {
+                q.pollLast();
+            }
+            q.offer(i);
+            if (i >= k - 1) {
+                r[ri++] = a[q.peek()];
+            }
+        }
+        return r;
     }
 }
