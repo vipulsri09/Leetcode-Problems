@@ -1,14 +1,18 @@
 class Solution {
-    private boolean checkSymmetric(TreeNode left, TreeNode right) {
-        if (left == null || right == null)
-            return left == right;
-        if (left.val != right.val)
-            return false;
-        return checkSymmetric(left.left, right.right) &&
-               checkSymmetric(left.right, right.left);
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null)
+            return true; // A null tree is symmetric
+        return checksame(root.left, root.right);
     }
 
-    public boolean isSymmetric(TreeNode root) {
-        return root == null || checkSymmetric(root.left, root.right);
+    public boolean checksame(TreeNode leftroot, TreeNode rightroot) {
+        if (leftroot == null && rightroot == null)
+            return true;
+        if (leftroot == null || rightroot == null)
+            return false;
+        if (leftroot.val != rightroot.val)
+            return false;
+        return checksame(leftroot.left, rightroot.right) &&
+               checksame(leftroot.right, rightroot.left);
     }
 }
