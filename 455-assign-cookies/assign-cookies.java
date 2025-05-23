@@ -1,16 +1,16 @@
-import java.util.Arrays;
 class Solution {
     public int findContentChildren(int[] g, int[] s) {
         Arrays.sort(g);
         Arrays.sort(s);
-        int index = 0;
-        int cnt = 0;
-        while (index < s.length && cnt < g.length) {
-            if (s[index] >= g[cnt]) {
-                cnt++;
+        int count = 0;
+        int i = 0, j = 0;
+        while(i < g.length && j < s.length) {
+            if(g[i] <= s[j]) {
+                count++;
+                i++; j++;
             }
-            index++;
+            else j++;
         }
-        return cnt;
+        return count;
     }
 }
