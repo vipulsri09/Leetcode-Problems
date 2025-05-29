@@ -1,34 +1,36 @@
-class Solution {
+public class Solution {
     public String longestPalindrome(String s) {
-        if (s.isEmpty())
-            return "";
+        if (s.length() <= 1) {
+            return s;
+        }
 
-        int[] longestPalindromeIndices = { 0, 0 };
+        int maxLen = 1;
+        String maxStr = s.substring(0, 1);
 
-        for (int i = 0; i < s.length(); ++i) {
-            int[] currentIndices = expandAroundCenter(s, i, i);
-
-            if (currentIndices[1] - currentIndices[0] > longestPalindromeIndices[1] - longestPalindromeIndices[0]) {
-                longestPalindromeIndices = currentIndices;
-            }
-
-            if (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
-                int[] evenIndices = expandAroundCenter(s, i, i + 1);
-
-                if (evenIndices[1] - evenIndices[0] > longestPalindromeIndices[1] - longestPalindromeIndices[0]) {
-                    longestPalindromeIndices = evenIndices;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i + maxLen; j <= s.length(); j++) {
+                if (j - i > maxLen && isPalindrome(s.substring(i, j))) {
+                    maxLen = j - i;
+                    maxStr = s.substring(i, j);
                 }
             }
         }
 
-        return s.substring(longestPalindromeIndices[0], longestPalindromeIndices[1] + 1);
+        return maxStr;
     }
 
-    private int[] expandAroundCenter(final String s, int i, int j) {
-        while (i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
-            i--;
-            j++;
+    private boolean isPalindrome(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
-        return new int[] { i + 1, j - 1 };
+
+        return true;
     }
 }
