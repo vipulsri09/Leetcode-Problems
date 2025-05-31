@@ -1,33 +1,22 @@
 import java.util.*;
-
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
-        if (root == null) return new ArrayList<>();
-        
-        ArrayList<Integer> ans = new ArrayList<>();
-        Queue<ArrayList<TreeNode>> q = new LinkedList<>();
-        q.add(new ArrayList<>(Arrays.asList(root)));
+        List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
 
-        while (!q.isEmpty()) {
-            ArrayList<TreeNode> nextLevel = new ArrayList<>();
-            ArrayList<TreeNode> currentLevel = q.poll();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
 
-            for (TreeNode node : currentLevel) {
-                if (node.left != null) {
-                    nextLevel.add(node.left);
-                }
-                if (node.right != null) {
-                    nextLevel.add(node.right);
-                }
-            }
-
-            if (!nextLevel.isEmpty()) {
-                ans.add(nextLevel.get(nextLevel.size() - 1).val);
-                q.add(nextLevel);
+        while (!queue.isEmpty()) {
+            int levelSize = queue.size();
+            for (int i = 0; i < levelSize; i++) {
+                TreeNode node = queue.poll();
+                if (i == levelSize - 1) result.add(node.val);
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
             }
         }
 
-        ans.add(0, root.val);
-        return ans;
+        return result;
     }
 }
