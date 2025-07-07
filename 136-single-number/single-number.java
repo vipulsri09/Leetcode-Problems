@@ -1,9 +1,9 @@
-public class Solution {
+class Solution {
     public int singleNumber(int[] nums) {
-        int result = 0;
-        for (int num : nums) {
-            result ^= num;
+        int uniqNum = 0;
+        for (int idx : nums) {
+            uniqNum ^= idx;
         }
-        return result;
+        return uniqNum;
     }
 }
